@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script>
+
+async function getJSON()
+    {
+        try 
+        {
+           window.fetch(
+            '/args',
+           {
+             method:'get',
+             headers:
+             {
+                 'Content-Type':'application/json',
+                 'Accept':'application/json'
+             }
+           }
+           ).then((response)=>{return response.json();})
+           .then((result)=>{
+               console.log(result)
+           });
+            
+        } catch (e) {
+            console.warn(e.message);
+        }
+    }
+
+</script>
+
+</head>
+<body>
+
+<h1>TEST</h1>
+
+<input id='myInput' type="file" accept=".png, .jpg, .jpeg" name="file1">
+<button id="but" onClick = getJSON()>Click me</button>
+
+</body>
+</html>
