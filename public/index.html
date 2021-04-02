@@ -3,15 +3,26 @@
 <head>
 
 <script>
+window.onload = () => {
+    console.log("dinWindowLoad")
+    const but = document.getElementById("but")
+    const inputURL = document.getElementById("photoURL")
+    but.onclick = () => {
+        getJSON(inputURL.value)
+    }
+}
 
-async function getJSON()
+async function getJSON(downloadURL)
     {
         try 
         {
            window.fetch(
-            '/args',
+            `/args`,
            {
-             method:'get',
+             method:'post',
+             body: JSON.stringify({
+        URL: `${downloadURL}`
+    }),
              headers:
              {
                  'Content-Type':'application/json',
@@ -21,13 +32,12 @@ async function getJSON()
            ).then((response)=>{return response.json();})
            .then((result)=>{
                console.log(result)
-           });
-            
+           });  
         } catch (e) {
             console.warn(e.message);
         }
     }
-
+    
 </script>
 
 </head>
@@ -35,7 +45,9 @@ async function getJSON()
 
 <h1>TEST</h1>
 
-<input id='myInput' type="file" accept=".png, .jpg, .jpeg" name="file1">
+<input type="text" id="photoURL" >
+<br>
+<br>
 <button id="but" onClick = getJSON()>Click me</button>
 
 </body>
