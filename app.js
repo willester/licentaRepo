@@ -33,7 +33,7 @@ app.post('/args',async (req, res, next) =>
 
         downloadImage(req.body.URL,generatedHashName)
 
-        exec(`python C:/Users/Willestur/Desktop/test/argTest.py ${req.body.URL}`, (e,stdout, stderr) => {
+        exec(`python E:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelCuFisierPython.py ${generatedHashName}`, (e,stdout, stderr) => {
             if(e instanceof Error){
                 console.error(e)
                 throw e
@@ -41,28 +41,21 @@ app.post('/args',async (req, res, next) =>
             console.log('stderr ',stderr)
             console.log('stdout ',stdout)
         })
+        let returnJson
         setTimeout( ()=> 
-        {res.status(200).json({message: 'mergePitonu'})},3000)
-    }
-    catch(error)
-    {
-        next(error)
-    }
-})
+        {fs.readFile(`C:/Users/Willestur/Desktop/test/${generatedHashName}/${generatedHashName}.json`, 'utf8', (err, data) => {
 
-app.post('/py',async (req, res, next) =>
-{
-    try{
-        exec('python E:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelCuFisierPython.py', (e,stdout, stderr) => {
-            if(e instanceof Error){
-                console.error(e)
-                throw e
-            } 
-            console.log('stderr ',stderr)
-            console.log('stdout ',stdout)
-        })
-        setTimeout( ()=> 
-        {res.status(200).json({message: 'mergePitonu'})},300000)
+          if (err) {
+              console.log(`Error reading file from disk: ${err}`);
+          } else {
+      
+              
+            returnJson = JSON.parse(data);
+            res.status(200).json(returnJson)
+          }
+          
+      })},30000)
+      
     }
     catch(error)
     {
