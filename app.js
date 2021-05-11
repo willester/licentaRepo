@@ -28,9 +28,7 @@ app.post('/args',async (req, res, next) =>
 
         let generatedHashName = hashCodeGenerator(`${req.body.URL}`)
         console.log(generatedHashName)
-
         createDirectories(generatedHashName)
-
         downloadImage(req.body.URL,generatedHashName)
 
         exec(`python E:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelCuFisierPython.py ${generatedHashName}`, (e,stdout, stderr) => {
@@ -44,18 +42,43 @@ app.post('/args',async (req, res, next) =>
         let returnJson
         setTimeout( ()=> 
         {fs.readFile(`C:/Users/Willestur/Desktop/test/${generatedHashName}/${generatedHashName}.json`, 'utf8', (err, data) => {
-
           if (err) {
               console.log(`Error reading file from disk: ${err}`);
           } else {
-      
-              
             returnJson = JSON.parse(data);
             res.status(200).json(returnJson)
           }
-          
       })},30000)
-      
+    }
+    catch(error)
+    {
+        next(error)
+    }
+})
+
+app.post('/rediagnose',async (req, res, next) =>
+{
+    try{
+        let photoFolderPath = req.body.Path
+        console.log(photoFolderPath)
+        exec(`python E:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelClase.py ${photoFolderPath}`, (e,stdout, stderr) => {
+            if(e instanceof Error){
+                console.error(e)
+                throw e
+            } 
+            console.log('stderr ',stderr)
+            console.log('stdout ',stdout)
+        })
+        let returnJson
+        setTimeout( ()=> 
+        {fs.readFile(`C:/Users/Willestur/Desktop/test/${photoFolderPath}/${photoFolderPath}Rediagnose.json`, 'utf8', (err, data) => {
+          if (err) {
+              console.log(`Error reading file from disk: ${err}`);
+          } else { 
+            returnJson = JSON.parse(data);
+            res.status(200).json(returnJson)
+          }   
+      })},30000)
     }
     catch(error)
     {
@@ -100,7 +123,7 @@ const hashCodeGenerator = function(URL) {
 
 
 app.use(express.static('./public')).get('*',function (req,res) {
-        res.sendfile('./index.html');
+        res.sendFile('./index.html');
         })
 
 module.exports = app

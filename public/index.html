@@ -2,13 +2,21 @@
 <html>
 <head>
 
+
+<link rel="stylesheet" type="text/css" href="./css/1.css">
 <script>
+
+let photoToBeCheckedAgainPath
+
 window.onload = () => {
-    console.log("dinWindowLoad")
     const but = document.getElementById("but")
     const inputURL = document.getElementById("photoURL")
     but.onclick = () => {
         getJSON(inputURL.value)
+    }
+    const rediagnoseButton = document.getElementById("reDiagnose")
+    rediagnoseButton.onclick = () => {
+        getRediagnosed(photoToBeCheckedAgainPath)
     }
 }
 
@@ -29,26 +37,69 @@ async function getJSON(downloadURL)
                  'Accept':'application/json'
              }
            }
-           ).then((response)=>{return response.json();})
+           ).then((response)=>{return response.json() })
            .then((result)=>{
-               console.log(result)
-           });  
+            const paragraf = document.getElementById("diagnosis")
+            paragraf.innerHTML = result.diagnosis
+            photoToBeCheckedAgainPath = result.folderName
+            const Rediagnose = document.getElementById("reDiagnose").style.display = "block"
+            const diagnoseButton = document.getElementById("but").style.display = "none"
+            console.log(photoToBeCheckedAgainPath)
+        });  
         } catch (e) {
             console.warn(e.message);
         }
     }
-    
+
+    async function getRediagnosed(pathFolder)
+    {
+        try 
+        {
+           window.fetch(
+            `/rediagnose`,
+           {
+             method:'post',
+             body: JSON.stringify({
+        Path: `${pathFolder}`
+    }),
+             headers:
+             {
+                 'Content-Type':'application/json',
+                 'Accept':'application/json'
+             }
+           }
+           ).then((response)=>{return response.json() })
+           .then((result)=>{
+            console.log(result)
+            let diagnosisChart = document.getElementById("diagnonsisCharts")
+            diagnosisChart.src = `./diagnosisCharts/${photoToBeCheckedAgainPath}DiagnosisChart.png`
+            
+        });  
+        } catch (e) {
+            console.warn(e.message);
+        }
+}
+
 </script>
 
 </head>
 <body>
 
-<h1>TEST</h1>
+<div>
+<h1 class="elementDiv">TEST</h1>
 
-<input type="text" id="photoURL" >
-<br>
-<br>
-<button id="but" onClick = getJSON()>Click me</button>
+<input type="text" id="photoURL" class="elementDiv">
+
+<button id="but"  class="elementDiv"> Get diagnosis </button>
+<button id="reDiagnose" style="display: none;"  onClick = getRediagnosed()>Rediagnose</button>
+<p id="diagnosis" class="elementDiv"> AICI O SA VINA JSONU</p>
+
+<img id="diagnonsisCharts" >
+
+
+</div>
+
+
 
 </body>
 </html>
