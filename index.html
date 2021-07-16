@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<link rel="stylesheet" type="text/css" href="./css/1.css">
+<script>
+
+let photoToBeCheckedAgainPath
+
+window.onload = () => {
+    const but = document.getElementById("but")
+    const inputURL = document.getElementById("photoURL")
+    const instructionsButt = document.getElementById("instructions")
+    const instructionBody = document.getElementById("instBody")
+    instructionsButt.onclick = () => {
+        instructionBody.style.display = instructionBody.style.display === 'block' ? 'none' : 'block'
+    }
+
+    but.onclick = () => {
+        getJSON(inputURL.value)
+    }
+    const rediagnoseButton = document.getElementById("reDiagnose")
+    rediagnoseButton.onclick = () => {
+        getRediagnosed(photoToBeCheckedAgainPath)
+    }
+}
+
+async function getJSON(downloadURL)
+    {
+        try 
+        {
+           window.fetch(
+            `/args`,
+           {
+             method:'post',
+             body: JSON.stringify({
+        URL: `${downloadURL}`
+    }),
+             headers:
+             {
+                 'Content-Type':'application/json',
+                 'Accept':'application/json'
+             }
+           }
+           ).then((response)=>{return response.json() })
+           .then((result)=>{
+            const paragraf = document.getElementById("diagnosis")
+            paragraf.innerHTML = result.diagnosis
+            photoToBeCheckedAgainPath = result.folderName
+            const Rediagnose = document.getElementById("reDiagnose").style.display = "block"
+            const diagnoseButton = document.getElementById("but").style.display = "none"
+            const photoURLInputBox = document.getElementById("photoURL").style.display = "none"
+            console.log(photoToBeCheckedAgainPath)
+        });  
+        } catch (e) {
+            console.warn(e.message);
+        }
+    }
+
+    async function getRediagnosed(pathFolder)
+    {
+        try 
+        {
+           window.fetch(
+            `/rediagnose`,
+           {
+             method:'post',
+             body: JSON.stringify({
+        Path: `${pathFolder}`
+    }),
+             headers:
+             {
+                 'Content-Type':'application/json',
+                 'Accept':'application/json'
+             }
+           }
+           ).then((response)=>{return response.json() })
+           .then((result)=>{
+            console.log(result)
+            let diagnosisChart = document.getElementById("diagnonsisCharts")
+            diagnosisChart.src = `./diagnosisCharts/${photoToBeCheckedAgainPath}DiagnosisChart.png`
+            diagnosisChart.style.border = "red 3px solid"
+            
+        });  
+        } catch (e) {
+            console.warn(e.message);
+        }
+}
+
+</script>
+
+</head>
+<body>
+
+<div>
+
+    <ul class='navbar'>
+       <li onClick="window.location.reload();" > <img src="https://clipartart.com/images/respiratory-system-lung-sacs-clipart-no-background-4.png"> <a> PulmoCheck </a></li>
+    </ul>
+
+<h1 class="elementDiv">Welcome</h1>
+<h1> In order to get your diagnosis follow the instructions</h1>
+
+<button id="instructions"  class="elementDiv"> Intructions </button>
+
+<div style="display: none;" id="instBody">
+<h2> 1.Insert a photo URL</h2>
+<h3> Example of valid URL: https://i.ibb.co/T0GN2DK/10-to-5-20190222-112924.jpg</h3>
+<h3> Viable service for hosting pictures to get the URL: https://imgbb.com/</h3>
+<h2> 2. Press the "Get diagnosis" button</h2>
+<h2> 3. For a more in depth analysis, press the "Rediagnose" button </h2>
+</div>
+
+<input type="text" id="photoURL" class="elementDiv" placeholder="URL goes here" autocomplete="off">
+
+
+<button id="but"  class="elementDiv"> Get diagnosis </button>
+<button id="reDiagnose" style="display: none;"  onClick = getRediagnosed()>Rediagnose</button>
+<p id="diagnosis" class="elementDiv"> </p>
+
+<img id="diagnonsisCharts" style="margin-bottom: 5%;">
+
+</div>
+
+</body>
+</html>

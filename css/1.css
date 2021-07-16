@@ -1,0 +1,106 @@
+body {
+    margin:0;
+    background-image: linear-gradient(120deg, #f0eeee, #ffffff);
+    background-color: rgb(221, 7, 7);
+    font-family: 'David Libre';
+}
+
+.navbar{
+   
+    position: sticky;
+    top: 0;
+    min-height: 2%;
+    width:100vw;
+    z-index: 1;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0% 0px;
+    height: 1%;
+    overflow: hidden;
+    background-color:  rgb(221, 7, 7);
+    position: sticky;
+}
+  
+li {
+    display: flex;
+    justify-content: center;
+    min-height: 50px;
+    float: left;
+    padding-top: 10px;
+    padding-left: 2%;
+    
+}
+
+li a {
+    padding-left: 10%;
+    padding-top: 10%;
+    color: white;
+}
+
+li img {
+    height: 40px;
+    width: 40px;
+    margin-left: 5%;
+}
+
+button {
+    border-radius: 8.5px;
+    background-color :  rgb(221, 7, 7);
+    height: 40px;
+    width: 5%;
+    color: white;
+    -webkit-transition: background 300ms ease-in-out;
+    transition: background 300ms ease-in-out;
+  }
+
+button:hover {
+    background-color : black;
+    border: 0;
+    color: white;
+}
+
+input[type=text] {
+    /* background-color: rgb(221, 7, 7);
+    color: white;
+    outline: none; */
+    font-size: 1.5em;    
+    background-color: transparent;
+    border: none;
+    border-top: 3px solid rgb(221, 7, 7);    
+    border-bottom: 3px solid rgb(221, 7, 7);
+    outline: none;
+    color: black; 
+}
+
+
+div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 80%;
+}
+
+.elementDiv{
+    margin-bottom: 2.5%;
+}
+
+h1 { 
+    border-bottom: red 1px solid;
+}
+
+li :hover {
+    cursor: pointer;
+  }
+
+
+#instBody{
+    margin-bottom: 20px;
+    border: 3px red solid;
+    padding: 10px;
+    border-radius: 10px;
+}
