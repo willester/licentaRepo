@@ -31,7 +31,7 @@ app.post('/args',async (req, res, next) =>
         createDirectories(generatedHashName)
         downloadImage(req.body.URL,generatedHashName)
 
-        exec(`python E:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelCuFisierPython.py ${generatedHashName}`, (e,stdout, stderr) => {
+        exec(`python D:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelCuFisierPython.py ${generatedHashName}`, (e,stdout, stderr) => {
             if(e instanceof Error){
                 console.error(e)
                 throw e
@@ -61,7 +61,7 @@ app.post('/rediagnose',async (req, res, next) =>
     try{
         let photoFolderPath = req.body.Path
         console.log(photoFolderPath)
-        exec(`python E:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelClase.py ${photoFolderPath}`, (e,stdout, stderr) => {
+        exec(`python D:/Faculta/_LICENTA/_Aplicatie/pozeModel1SauBinaryModel/verificareModelClase.py ${photoFolderPath}`, (e,stdout, stderr) => {
             if(e instanceof Error){
                 console.error(e)
                 throw e
